@@ -36,7 +36,7 @@ bool decode_data_transfert8_inst()
 	// MOV A, r
 	if ((inst & 0xF8) == 0x08)
 	{
-		sprintf(inst_asm, "MOV %s,A", T[inst & 0x7]);
+		sprintf(inst_asm, "MOV A, %s", T[inst & 0x7]);
 		return true;
 	}
 	// MOV sr, A
