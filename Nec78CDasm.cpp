@@ -56,15 +56,15 @@ bool decode_data_transfert8_inst()
 	// MOV r, Word
 	if ((inst == 0x70) && ((next_inst & 0xF8) == 0x68))
 	{
-		sprintf(inst_asm, "MOV    %s, [%02X%02X]", R[next_inst & 0x7], code[ptr + 3], code[ptr + 2]);
-		sprintf(tmp_str, " %02X %02X %02X", next_inst, code[ptr + 2], code[ptr + 3]); strcat(inst_hex, tmp_str); ptr += 3;
+		sprintf(inst_asm, "MOV    %s, [%02X%02X]", R[next_inst & 0x7], code[ptr + 2], code[ptr + 1]);
+		sprintf(tmp_str, " %02X %02X %02X", next_inst, code[ptr + 1], code[ptr + 2]); strcat(inst_hex, tmp_str); ptr += 3;
 		return true;
 	}
 	// MOV Word, r
 	if ((inst == 0x70) && ((next_inst & 0xF8) == 0x78))
 	{
-		sprintf(inst_asm, "MOV    [%02X%02X], %s", code[ptr + 3], code[ptr + 2], R[next_inst & 0x7]);
-		sprintf(tmp_str, " %02X %02X %02X", next_inst, code[ptr + 2], code[ptr + 3]); strcat(inst_hex, tmp_str); ptr += 3;
+		sprintf(inst_asm, "MOV    [%02X%02X], %s", code[ptr + 2], code[ptr + 1], R[next_inst & 0x7]);
+		sprintf(tmp_str, " %02X %02X %02X", next_inst, code[ptr + 1], code[ptr + 2]); strcat(inst_hex, tmp_str); ptr += 3;
 		return true;
 	}
 	// MVI r, Byte
@@ -190,37 +190,37 @@ bool decode_data_transfert16_inst()
 		switch (next_inst)
 		{
 		case 0x1E: // SBCD
-			sprintf(inst_asm, "SBCD   [%02X%02X]", code[ptr + 1], code[ptr]);
+			sprintf(inst_asm, "SBCD   [%02X%02X]", code[ptr + 2], code[ptr + 1]);
 			sprintf(tmp_str, " %02X %02X %02X", code[ptr], code[ptr + 1], code[ptr + 2]);
 			ptr += 3; strcat(inst_hex, tmp_str);
 			return true;
 		case 0x2E: // SDED
-			sprintf(inst_asm, "SDED   [%02X%02X]", code[ptr + 1], code[ptr]);
+			sprintf(inst_asm, "SDED   [%02X%02X]", code[ptr + 2], code[ptr + 1]);
 			sprintf(tmp_str, " %02X %02X %02X", code[ptr], code[ptr + 1], code[ptr + 2]);
 			ptr += 3; strcat(inst_hex, tmp_str);
 			return true;
 		case 0x3E: // SHLD
-			sprintf(inst_asm, "SHLD   [%02X%02X]", code[ptr + 1], code[ptr]);
+			sprintf(inst_asm, "SHLD   [%02X%02X]", code[ptr + 2], code[ptr + 1]);
 			sprintf(tmp_str, " %02X %02X %02X", code[ptr], code[ptr + 1], code[ptr + 2]);
 			ptr += 3; strcat(inst_hex, tmp_str);
 			return true;
 		case 0x0E: // SSPD
-			sprintf(inst_asm, "SSPD   [%02X%02X]", code[ptr + 1], code[ptr]);
+			sprintf(inst_asm, "SSPD   [%02X%02X]", code[ptr + 2], code[ptr + 1]);
 			sprintf(tmp_str, " %02X %02X %02X", code[ptr], code[ptr + 1], code[ptr + 2]);
 			ptr += 3; strcat(inst_hex, tmp_str);
 			return true;
 		case 0x1F: // LBCD
-			sprintf(inst_asm, "LBCD   [%02X%02X]", code[ptr + 1], code[ptr]);
+			sprintf(inst_asm, "LBCD   [%02X%02X]", code[ptr + 2], code[ptr + 1]);
 			sprintf(tmp_str, " %02X %02X %02X", code[ptr], code[ptr + 1], code[ptr + 2]);
 			ptr += 3; strcat(inst_hex, tmp_str);
 			return true;
 		case 0x2F: // LDED
-			sprintf(inst_asm, "LDED   [%02X%02X]", code[ptr + 1], code[ptr]);
+			sprintf(inst_asm, "LDED   [%02X%02X]", code[ptr + 2], code[ptr + 1]);
 			sprintf(tmp_str, " %02X %02X %02X", code[ptr], code[ptr + 1], code[ptr + 2]);
 			ptr += 3; strcat(inst_hex, tmp_str);
 			return true;
 		case 0x3F: // LHLD
-			sprintf(inst_asm, "LHLD   [%02X%02X]", code[ptr + 1], code[ptr]);
+			sprintf(inst_asm, "LHLD   [%02X%02X]", code[ptr + 2], code[ptr + 1]);
 			sprintf(tmp_str, " %02X %02X %02X", code[ptr], code[ptr + 1], code[ptr + 2]);
 			ptr += 3; strcat(inst_hex, tmp_str);
 			return true;
@@ -692,63 +692,63 @@ bool decode_arithmetic_16_inst()
 		switch (next_inst & 0xFC)
 		{
 		case 0xC4: // DADD
-			sprintf(inst_asm, "DADD   EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DADD   EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xD4: // DADC
-			sprintf(inst_asm, "DADC   EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DADC   EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xA4: // DADDNC
-			sprintf(inst_asm, "DADDNC EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DADDNC EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xE4: // DSUB
-			sprintf(inst_asm, "DSUB   EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DSUB   EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xF4: // DSBB
-			sprintf(inst_asm, "DSBB   EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DSBB   EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xB4: // DSUBNB
-			sprintf(inst_asm, "DSUBNB EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DSUBNB EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0x8C: // DAN
-			sprintf(inst_asm, "DAN    EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DAN    EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0x9C: // DOR
-			sprintf(inst_asm, "DOR    EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DOR    EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0x94: // DXR
-			sprintf(inst_asm, "DXR    EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DXR    EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xAC: // DGT
-			sprintf(inst_asm, "DGT    EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DGT    EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xBC: // DLT
-			sprintf(inst_asm, "DLT    EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DLT    EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xEC: // DNE
-			sprintf(inst_asm, "DNE    EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DNE    EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xFC: // DEQ
-			sprintf(inst_asm, "DEQ    EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DEQ    EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xCC: // DON
-			sprintf(inst_asm, "DON    EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DON    EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		case 0xDC: // DOFF
-			sprintf(inst_asm, "DOFF   EA, %s", RP[next_inst & 0x3]);
+			sprintf(inst_asm, "DOFF   EA, %s", P[next_inst & 0x3]);
 			sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
 			return true;
 		}
@@ -762,98 +762,98 @@ bool decode_working_reg_inst()
 		{
 		case 0xC0: // ADDW
 			sprintf(inst_asm, "ADDW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xD0: // ADCW
 			sprintf(inst_asm, "ADCW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xA0: // ADDNCW
 			sprintf(inst_asm, "ADDNCW %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xE0: // SUBW
 			sprintf(inst_asm, "SUBW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xF0: // SBBW
 			sprintf(inst_asm, "SBBW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xB0: // SBBNBW
 			sprintf(inst_asm, "SBBNBW %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0x88: // ANAW
 			sprintf(inst_asm, "ANAW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0x98: // ORAW 98
 			sprintf(inst_asm, "ORAW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0x90: // XRAW 90
 			sprintf(inst_asm, "XRAW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xA8: // GTAW
 			sprintf(inst_asm, "GTAW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xB8: // LTAW
 			sprintf(inst_asm, "LTAW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xE8: // NEAW
 			sprintf(inst_asm, "NEAW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xF8: // EQAW
 			sprintf(inst_asm, "EQAW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xC8: // ONAW
 			sprintf(inst_asm, "ONAW   %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		case 0xD8: // OFFAW D8
 			sprintf(inst_asm, "OFFAW  %02X", code[ptr + 1]);
-			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+			sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 			return true;
 		}
 	switch (inst)
 	{
 	case 0x05: // ANIW
 		sprintf(inst_asm, "ANIW   %02X, %02X", code[ptr], code[ptr + 1]);
-		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 		return true;
 	case 0x15: // ORIW
 		sprintf(inst_asm, "ORIW   %02X, %02X", code[ptr], code[ptr + 1]);
-		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 		return true;
 	case 0x25: // GTIW
 		sprintf(inst_asm, "GTIW   %02X, %02X", code[ptr], code[ptr + 1]);
-		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 		return true;
 	case 0x35: // LTIW
 		sprintf(inst_asm, "LTIW   %02X, %02X", code[ptr], code[ptr + 1]);
-		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 		return true;
 	case 0x65: // NEIW
 		sprintf(inst_asm, "NEIW   %02X, %02X", code[ptr], code[ptr + 1]);
-		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 		return true;
 	case 0x75: // EQIW
 		sprintf(inst_asm, "EQIW   %02X, %02X", code[ptr], code[ptr + 1]);
-		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 		return true;
 	case 0x45: // ONIW
 		sprintf(inst_asm, "ONIW   %02X, %02X", code[ptr], code[ptr + 1]);
-		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 		return true;
 	case 0x55: // OFFIW
 		sprintf(inst_asm, "OFFIW  %02X, %02X", code[ptr], code[ptr + 1]);
-		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr++;
+		sprintf(tmp_str, " %02X %02X", code[ptr], code[ptr + 1]); strcat(inst_hex, tmp_str); ptr+=2;
 		return true;
 	}
 	return false;
@@ -1235,7 +1235,7 @@ int main(int argc, char *argv[])
 		org_code = end_code = 0;
 		sscanf(s, "%s %x %x", cmd, &org_code, &end_code);
 		if (end_code != 0)
-			len_code = (end_code - org_code);
+			len_code = (end_code - org_code) + 1;
 		else
 			len_code = 0x100;
 		switch (s[0])
@@ -1266,24 +1266,24 @@ int main(int argc, char *argv[])
 				{
 					if (j<(org_code & 0xF))
 						if (j != 8)
-							printf("   ", dig);
-						else printf("-  ", dig);
+							printf("   ");
+						else printf("-  ");
 					else
 					{
 						len_code--;
-						dig = code[(org_code & 0xF) + j];
+						dig = code[j - (org_code & 0xF)]; 
 						if (j == 8) printf("-%02X", dig);
 						else printf(" %02X", dig);
 					}
 				}
-				org_code = (org_code & 0xFFFFF0) + 0x10;
+				//org_code = (org_code & 0xFFFFF0) + 0x10;
 			}
 			for (int i = 0; (len_code>0); i++)
 			{
-				printf("\n%05X:", org_code+i*16);
-				for (int j = 0;(len_code>0) && (j < 16); j++, len_code--)
+				printf("\n%05X:", (org_code & 0xFFFFF0) + (i + 1) * 16);
+				for (int j = 0; (len_code > 0) && (j < 16); j++, len_code--)
 				{
-					dig = code[16 * i + j];
+					dig = code[16 * i + j + 0x10 - (org_code & 0x0F)];
 					if (j == 8) printf("-%02X", dig);
 					else printf(" %02X", dig);
 				}
@@ -1292,7 +1292,7 @@ int main(int argc, char *argv[])
 		case 'u':
 			ptr = 0;
 			fseek(bin_file, org_code, SEEK_SET);
-			fread(code, len_code, 1, bin_file);
+			fread(code, len_code+3, 1, bin_file);
 			do {
 				if(!read_next_inst()) break;
 				for (int i = 0; (i < 14) && (!decode_inst_proc[i]()); i++);
