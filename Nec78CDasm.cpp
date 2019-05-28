@@ -1231,7 +1231,7 @@ int main(int argc, char *argv[])
 		//bin_file = fopen("D:\\Projects\\CPP\\Nec78CDasm\\Debug\\d.bin", "rb");
 	do {
 		printf("\n>");
-		gets(s);
+		fgets(s, 200, stdin);
 		org_code = end_code = 0;
 		sscanf(s, "%s %x %x", cmd, &org_code, &end_code);
 		if (end_code != 0)
@@ -1296,9 +1296,7 @@ int main(int argc, char *argv[])
 			do {
 				if(!read_next_inst()) break;
 				for (int i = 0; (i < 14) && (!decode_inst_proc[i]()); i++);
-				for (int i = 24 - strlen(inst_hex); i > 0; i--)
-					strcat(inst_hex, " ");
-				printf("\n%s%s", inst_hex, inst_asm);
+				printf("\n%-24s%s", inst_hex, inst_asm);
 			} while (ptr < len_code);
 			break;
 		}
