@@ -1182,33 +1182,6 @@ bool unknown_inst()
 	sprintf(inst_asm, "*");
 	return true;
 }
-/*
-void decode_inst()
-{
-	//
-	//printf("\norg=%x ptr=%x", org, ptr);
-	/*inst_asm[0] = inst_hex[0] = 0;
-	inst = code[ptr];
-	sprintf(inst_hex, "%05X: %02X", org + ptr++, inst);* /
-	switch (inst & 0xF8)
-	{
-	case 0x68:// MVI
-		sprintf(inst_asm, "MVI %s,%02X", R[inst & 0x7], code[ptr]);
-		sprintf(tmp_str, " %02X", code[ptr++]); strcat(inst_hex, tmp_str);
-		return;break;
-	}
-	if ((inst & 0xE8) == 0x08)
-	{
-		// MOV
-		if (inst & 0x10)
-			sprintf(inst_asm, "MOV %s, A", T[inst & 0x7]);
-		else
-			sprintf(inst_asm, "MOV A, %s", T[inst & 0x7]);
-		return;
-	}
-	//decode_other_inst();
-}
-*/
 
 bool read_next_inst()
 {
@@ -1234,7 +1207,7 @@ int main(int argc, char *argv[])
 		fgets(s, 200, stdin);
 		org_code = end_code = 0;
 		sscanf(s, "%s %x %x", cmd, &org_code, &end_code);
-		if (end_code != 0)
+		if ((end_code != 0) && (end_code >= org_code))
 			len_code = (end_code - org_code) + 1;
 		else
 			len_code = 0x100;
@@ -1259,6 +1232,8 @@ int main(int argc, char *argv[])
 		case 'd':
 			fseek( bin_file, org_code, SEEK_SET);
 			fread(code, len_code, 1, bin_file);
+			long last_pos;
+			last_pos = (org_code & 0xFFFFF0);
 			if ((org_code & 0xF) != 0)
 			{
 				printf("\n%05X:", (org_code & 0xFFFFF0));
@@ -1276,14 +1251,14 @@ int main(int argc, char *argv[])
 						else printf(" %02X", dig);
 					}
 				}
-				//org_code = (org_code & 0xFFFFF0) + 0x10;
+				last_pos += 0x10;
 			}
-			for (int i = 0; (len_code>0); i++)
+			for (int i = 0; (len_code > 0); i++)
 			{
-				printf("\n%05X:", (org_code & 0xFFFFF0) + (i + 1) * 16);
+				printf("\n%05X:", last_pos + i * 16);
 				for (int j = 0; (len_code > 0) && (j < 16); j++, len_code--)
 				{
-					dig = code[16 * i + j + 0x10 - (org_code & 0x0F)];
+					dig = code[16 * i + j + last_pos - (org_code & 0xF)];
 					if (j == 8) printf("-%02X", dig);
 					else printf(" %02X", dig);
 				}
